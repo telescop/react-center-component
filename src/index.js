@@ -24,6 +24,10 @@ export default function centerComponent(Component) {
       topOffset: null,
       leftOffset: null,
     }
+    constructor(props) {
+      super(props);
+      this.component = React.createRef();
+    }
     componentDidMount() {
       this.resizeChildNode();
       this._debouncedResize = debounce(this.resizeChildNode, 100);
@@ -39,7 +43,7 @@ export default function centerComponent(Component) {
       }
     }
     resizeChildNode = () => {
-      const node = ReactDOM.findDOMNode(this.refs.component);
+      const node = ReactDOM.findDOMNode(this.component.current);
 
       const nodeSize = {
         height: node.clientHeight,
@@ -69,7 +73,7 @@ export default function centerComponent(Component) {
 
       return <Component
         {...rest}
-        ref="component"
+        ref={this.component}
         topOffset={topOffset}
         top={topOffset}
         leftOffset={leftOffset}
